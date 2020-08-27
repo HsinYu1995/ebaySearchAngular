@@ -1,0 +1,99 @@
+body {
+    text-align: center;
+}
+option {
+    background-color:grey;
+    color: white;
+}
+.form-group .control-label {
+    text-align: left;
+}
+
+.cardBox {
+    text-align: center;
+  
+}
+.container {
+    align-items:center;
+}
+
+
+.table table-striped {
+    padding-bottom: 10px;
+}
+.list-group-item {
+    list-style-type: none;
+}
+li {
+    text-align: left;
+    list-style-type: none;
+}
+
+.nav flex-column {
+    list-style-type: none;
+}
+.container {
+    text-align: center; 
+}
+.col {
+    text-align: left;
+}
+.card {
+    border:none;
+}
+.card-img-left {
+    max-height: 200px;
+}
+.resultTitle {
+    text-align: left;
+}
+.show {
+    border-color: white;
+    background-color: white;
+    border-radius: 4px;
+}
+.form-group {   
+    font-weight: 700;
+}
+.show {
+    border: none;
+    margin-top:-7px;
+}
+.show:hover {
+    background-color: lightslategrey;
+}
+.pagination {
+    font-size:11px;
+}
+#searchButton {
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-align:center;
+    vertical-align: middle;
+    margin-right:10px;
+}
+#clearButton {
+    background-color: darkgray;
+    color: white;
+    border: none;
+    text-align:center;
+    vertical-align: middle;
+    border-radius: 4px;
+}
+
+#clearButton:hover {
+    color: black;
+}
+#clearButton:active {
+    color:black;
+}
+#clear {
+    vertical-align: middle;
+}
+#search {
+    vertical-align: middle;
+}
+
+

@@ -1,0 +1,253 @@
+<!Doctype html>
+<html>
+<head>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link href="./app.component.css" rel="text/html" />
+  
+</head>
+
+<body>
+  
+  <a href="https://www.ebay.com/" target="_blank"><img src="https://www.csci571.com/hw/hw6/images/eBayLogo.png" /></a>
+  <div class="container">
+    <form id="main" #myForm="ngForm">
+
+      <div class="form-group row" style="text-align:right;">
+        <div class="col-md-1"></div>
+        <label for="keywords" class="col-sm-2 control-label"><b>Key Words</b><span id="star" style="color:red;">&#42;</span><b>:</b></label>
+        <div class="col-md-8" >
+          <input type="search" id="keywords " class="form-control" [(ngModel)]="keywords" name="keywords" placeholder="Enter keywords">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-1"></div>
+        <label for="price" class="col-sm-2 control-label"><b>Price Range:</b></label>
+        <div class="col col-md-4">
+          <input type="text" class="form-control" id="min" [(ngModel)]="min" name="min" placeholder="Min Price" />
+        </div>
+        <div class="col col-md-4">
+          <input type="text" class="form-control" id="max" [(ngModel)]="max" name="max" placeholder="Max Price" />
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-1"></div>
+        <label class="col-sm-2 control-label"><b>Condition:</b></label>
+        <div class="col">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="new" value="new" [(ngModel)]="new" name="new" />
+            <label class="form-check-label" for="new">New</label>
+          </div>
+          <div class="form-check form-check-inline ">
+            <input class="form-check-input" type="checkbox" id="used" value="used" [(ngModel)]="used" name="used" />
+            <label class="form-check-label" for="used">Used</label>
+          </div>
+          <div class="form-check form-check-inline ">
+            <input class="form-check-input" type="checkbox" id="verygood" value="verygood" [(ngModel)]="verygood" name="verygood" />
+            <label class="form-check-label" for="verygood">Very Good</label>
+          </div>
+          <div class="form-check form-check-inline ">
+            <input class="form-check-input" type="checkbox" id="good" value="good" [(ngModel)]="good" name="good" />
+            <label class="form-check-label" for="good">Good</label>
+          </div>
+          <div class="form-check form-check-inline ">
+            <input class="form-check-input" type="checkbox" id="acceptable" value="acceptable" [(ngModel)]="acceptable" name="acceptable" />
+            <label class="form-check-label" for="acceptable">Acceptable</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-1"></div>
+        <label class="col-sm-2 control-label"><b>Seller:</b></label>
+        <div class="col">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="returnedaccepted" value="returnedaccept" [(ngModel)]="returnedaccepted" name="returnedaccepted" />
+            <label class="form-check-label" for="returnedaccepted">Returned Accepted</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-1"></div>
+        <label class="col-sm-2 control-label"><b>Shipping:</b></label>
+        <div class="col">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="free" value="free" [(ngModel)]="free" name="free" />
+            <label class="form-check-label" for="free">Free</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="expedited" value="expedited" [(ngModel)]="expedited" name="expedited" />
+            <label class="form-check-label" for="expedited">Expedited</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-1"></div>
+        <label class="col-sm-2 control-label"><b>Sort by:</b></label>
+        <div class="col-md-8">
+          <select class="custom-select" (change)="sortby($event)">
+            <option value="BestMatch">Best Match</option>
+            <option value="CurrentPriceHighest">Price: highest first</option>
+            <option value="PricePlusShippingHighest">Price + Shipping: highest first</option>
+            <option value="PricePlusShippingLowest">Price + shipping: lowest first</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-11" style="text-align:right">
+          <button id="searchButton" (click)="search()"><span class="material-icons" id='search'>search</span>Search</button>
+          <button id="clearButton" (click)="clear(myForm)"><span class="material-icons" id='clear'>clear_all</span>Clear</button>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-1"></div>
+        <div id="missingKeywords" style="color:black" class="alert alert-warning col-md-10" role="alert" *ngIf="labelKeywords==null || labelKeywords==''">
+          Please enter a keyword
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-1"></div>
+        <div id="wrongValues" style="color:black" class="alert alert-warning col-md-10" role="alert" *ngIf="numberLabel">
+          Please use appropriate values for minPrice/maxPrice
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-1"></div>
+        <div id="noResult" style="color:black" class="alert alert-warning col-md-10" role="alert" *ngIf="noResult">
+          No exact matches found
+        </div>
+      </div>
+    </form>
+    <!-- The page section-->
+    <div class="resultTitle" id="resultPart" *ngIf="result"> 
+      <div class="row"> <!-- title and pagination -->
+        <div class="col-md-6 col-12" style="text-align:left; font-size:18px" *ngIf="resultFor"><p><b>Results for {{displayKeywords}}</b></p></div>
+        
+        <div class="col-md-6" style="text-align:left"><pagination-controls class="pagination" [maxSize]="maxSize"
+                     [directionLinks]="directionLinks"
+                     [autoHide]="autoHide"
+                     [responsive]="responsive"
+                     [previousLabel]="labels.previousLabel"
+                     [nextLabel]="labels.nextLabel"
+                     [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel"
+                     [screenReaderPageLabel]="labels.screenReaderPageLabel"
+                     [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
+                     (pageChange)="onPageChange($event)"></pagination-controls></div>
+        
+      </div>
+      
+      <div>
+        <!-- pipeline of pagination -->
+        <div *ngFor="let item of imageCollection.data | paginate: config"> 
+          <div style="background-color:lightgrey; margin-bottom: 10px; ">
+            <!-- Each card border -->
+            <div class="card" style="background-color:lightgrey;">
+              <div class="row">
+                <!-- need change-->
+                <div class="col-md-3 col-12" style="text-align:center">
+                  <div class="card-head" style="background-color:lightgrey;margin-top: 5px;">
+                    <!-- need change-->
+                    <img src='{{item.url}}' class="card-img-left" style="max-height:150px; width:auto">
+                  </div>
+                </div>
+                <!-- card'content part -->
+                <div class="col" style="text-align:left">
+                  <div class="card-body" style="background-color:lightgrey;">
+                    <ul style="margin: 0 auto;" >
+                      <li style="font-weight:500;"><a href="{{item.viewItemURL}}" target="_blank">{{item.title}}</a></li> <!-- item title-->
+                      <li><b>Price: </b>${{item.price}}</li> <!--price-->
+                      <li>
+                        <form class="form-check-inline">
+                          <p style="text-align:left; margin-right:10px">{{item.location}}</p> <!--place-->
+                          <button class="show" style="font-size:11px;" *ngIf="item.moreButton" (click)="showMore(item.id)">Show Details</button>
+                          <button class="show" style="font-size:11px;"*ngIf="item.lessButton" (click)="showLess(item.id)">Hide Details</button>
+                        </form>
+                      </li>
+                      <li>
+                        <!-- test here-->
+                        <mat-tab-group *ngIf="item.lessButton">
+                          <!-- need change-->
+                          <mat-tab label="Basic Info">
+                            <table cellpadding="8">
+                              <tr>
+                                <td>
+                                  <b>Category Name</b>
+                                </td>
+                                <td>
+                                  {{item.categoryName}}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td><b>Condition</b></td>
+                                <td>{{item.condition}}</td>
+                              </tr>
+                            </table>
+                          </mat-tab>
+                          <mat-tab label="Shipping Info">
+                            <table cellpadding="8">
+                              <tr>
+                                <td><b>ShippingType</b></td>
+                                <td>{{item.shippingType}}</td>
+                              </tr>
+                              <tr>
+                                <td><b>Shipping cost</b></td>
+                                <td>{{item.shippingCost}}</td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <b>Shiptolocations</b>
+                                </td>
+                                <td>{{item.shipToLocations}}</td>
+                              </tr>
+                              <tr>
+                                <td><b>ExpeditedShipping</b></td>
+                                <td><span class="material-icons" [ngStyle]="{'color': item.expeditedColor}">{{item.expedited}}</span></td>
+                              </tr>
+                              <tr>
+                                <td><b>OneDayShippingAvailable</b></td>
+                                <td id="tdtest"><span class="material-icons" [ngStyle]="{'color': item.oneDayShippingAvailableColor}">{{item.oneDayShippingAvailable}}</span></td>
+                              </tr>
+                            </table>
+                          </mat-tab>
+                          <mat-tab label="Listing Info">
+                            <table>
+                              <tr>
+                                <td><b>BestOfferEnabled</b></td>
+                                <td><span class="material-icons" [ngStyle]="{'color': item.bestOfferColor}">{{item.bestOffer}}</span></td>
+                              </tr>
+                              <tr>
+                                <td><b>BuyItNowAvailable</b></td>
+                                <td><span class="material-icons" [ngStyle]="{'color': item.buyItNowAvailableColor}">{{item.buyItNow}}</span></td>
+                              </tr>
+                              <tr>
+                                <td><b>ListingType</b></td>
+                                <td>{{item.listingType}}</td>
+                              </tr>
+                              <tr>
+                                <td><b>Gift</b></td>
+                                <td><span class="material-icons" [ngStyle]="{'color':item.giftColor}">{{item.gift}}</span></td>
+                              </tr>
+                              <tr>
+                                <td><b>WatchCount</b></td>
+                                <td>{{item.watchCount}}</td>
+                              </tr>
+                            </table>
+                          </mat-tab>
+                        </mat-tab-group>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- show more part-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-- test-->
+  </div> <!-- container-->
+</body>
+</html>
