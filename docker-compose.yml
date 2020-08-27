@@ -1,0 +1,21 @@
+version: '3'
+
+services: 
+    angular:
+        build: ./frontend
+        container_name: angular_client
+        ports: 
+            - "4200:4200"
+        volumes: 
+            - ./frontend:/app
+    server:
+        build: ./Server
+        container_name: ebay_server
+        ports:
+            - "8080:8080"
+        volumes: 
+            - ./Server:/app
+
+
+
+
