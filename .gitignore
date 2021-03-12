@@ -8,8 +8,8 @@
 /bazel-out
 
 # dependencies
-frontend/node_modules/
-Server/node_module/
+**/node_modules/
+
 
 
 # profiling files
